@@ -263,7 +263,7 @@ as in
       name: esp-ingress
       annotations:
         kubernetes.io/ingress.global-static-ip-name: esp-ip
-        #kubernetes.io/ingress.allowHTTP: "false"
+        #kubernetes.io/ingress.allow-http: "false"
       labels:
         type: endpoints-app
     spec:
@@ -470,7 +470,7 @@ as in
     metadata:
       annotations:
         ...
-        kubernetes.io/ingress.allowHTTP: "false"
+        kubernetes.io/ingress.allow-http: "false"
     ...
     spec:
       tls:
