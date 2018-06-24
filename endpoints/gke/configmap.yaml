@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: env-var
+  labels:
+    type: endpoints-app  
+data:
+  IAP_URL: "https://YOUR_PROJECT.appspot.com"
+  JWT_ISSUER: "YOUR_PROJECT@appspot.gserviceaccount.com"
+  JWT_AUDIENCE: "api.endpoints.YOUR_PROJECT.cloud.goog"

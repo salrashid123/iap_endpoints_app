@@ -1,0 +1,139 @@
+swagger: '2.0'
+host: api.endpoints.YOUR_PROJECT.cloud.goog
+x-google-endpoints:
+- name: api.endpoints.YOUR_PROJECT.cloud.goog
+  allowCors: true
+  target: 35.201.95.158
+x-google-allow: configured
+basePath: "/"
+consumes:
+  - application/json
+definitions:
+  Todo:
+    properties:
+      id:
+        description: The task unique identifier
+        type: integer
+      task:
+        description: The task details
+        type: string
+    required:
+      - task
+    type: object
+info:
+  description: A simple TodoMVC API
+  title: TodoMVC API
+  version: '1.0'
+paths: 
+  /swagger.json:
+    get:
+      operationId: swagger_file
+      responses:
+        '200':
+          description: Success
+      summary: Show Swaggger.json (no security)
+      security: []
+  /todos:
+    get:
+      operationId: get_todo_list
+      parameters:
+        - description: An optional fields mask
+          format: mask
+          in: header
+          name: X-Fields
+          type: string
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/Todo'
+      summary: List all resources
+      tags:
+        - todos
+    post:
+      operationId: post_todo_list
+      parameters:
+        - description: An optional fields mask
+          format: mask
+          in: header
+          name: X-Fields
+          type: string
+      responses:
+        '201':
+          description: Success
+          schema:
+            $ref: '#/definitions/Todo'
+      summary: Create a given resource
+      tags:
+        - todos
+  '/todos/{id}':
+    delete:
+      operationId: delete_todo
+      responses:
+        '204':
+          description: Todo deleted
+      summary: Delete a given resource
+      tags:
+        - todos
+    get:
+      operationId: get_todo
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/Todo'
+        '404':
+          description: Todo not found
+      summary: Fetch a given resource
+      tags:
+        - todos
+    parameters:
+      - in: path
+        name: id
+        required: true
+        type: integer
+    put:
+      operationId: put_todo
+      parameters:
+        - in: body
+          name: payload
+          required: true
+          schema:
+            $ref: '#/definitions/Todo'
+        - description: An optional fields mask
+          format: mask
+          in: header
+          name: X-Fields
+          type: string
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/Todo'
+        '404':
+          description: Todo not found
+      summary: Update a given resource
+      tags:
+        - todos    
+produces:
+  - application/json
+responses:
+  MaskError:
+    description: When any error occurs on mask
+  ParseError:
+    description: When a mask can't be parsed
+tags:
+  - description: Default namespace
+    name: default
+  - description: TODO operations
+    name: todos
+securityDefinitions:
+  google_service_account:
+    authorizationUrl: ""
+    flow: "implicit"
+    type: "oauth2"
+    x-google-issuer: "YOUR_PROJECT@appspot.gserviceaccount.com"
+    x-google-jwks_uri: "https://www.googleapis.com/robot/v1/metadata/x509/YOUR_PROJECT@appspot.gserviceaccount.com"
+    x-google-audiences: "api.endpoints.YOUR_PROJECT.cloud.goog"
+security:
+  - google_service_account: []

@@ -1,0 +1,8 @@
+Flask
+flask-restplus==0.9.2
+flask-cors
+google-auth
+google-auth-httplib2
+requests
+pyjwt
+cryptography

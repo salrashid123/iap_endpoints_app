@@ -1,0 +1,61 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: esp-deployment
+  labels:
+    type: endpoints-app
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: esp-app
+    spec:
+      containers:
+      - name: esp
+        image: gcr.io/endpoints-release/endpoints-runtime:1
+        args: [
+          "--http_port", "8080",
+          "--backend", "127.0.0.1:50051",
+          "--service", "$(JWT_AUDIENCE)",
+          "--rollout_strategy", "managed",
+        ]
+        livenessProbe:
+          httpGet:
+            path: /swagger.json
+            port: 8080
+            scheme: HTTP
+        readinessProbe:
+          httpGet:
+            path: /swagger.json
+            scheme: HTTP
+            port: 8080                   
+        ports:
+          - containerPort: 8080
+        env:
+        - name: JWT_AUDIENCE
+          valueFrom:
+            configMapKeyRef:
+              name: env-var
+              key: JWT_AUDIENCE        
+      - name: myapp
+        image: gcr.io/YOUR_PROJECT/myapp
+        imagePullPolicy: Always
+        ports:
+          - containerPort: 50051
+        env:
+        - name: IAP_URL
+          valueFrom:
+            configMapKeyRef:
+              name: env-var
+              key: IAP_URL  
+        - name: JWT_ISSUER
+          valueFrom:
+            configMapKeyRef:
+              name: env-var
+              key: JWT_ISSUER          
+        - name: JWT_AUDIENCE
+          valueFrom:
+            configMapKeyRef:
+              name: env-var
+              key: JWT_AUDIENCE

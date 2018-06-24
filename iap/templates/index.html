@@ -1,0 +1,121 @@
+<!doctype html>
+
+<head>
+    <title>IAP Sample App</title>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
+    <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+    <link rel="stylesheet" href="/public/style.css">
+    <script src="/public/iap.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.17.0/axios.js"></script>
+</head>
+
+<body>
+
+  <div class="mdl-grid">
+    <div class="mdl-layout-spacer"></div>
+    <div class="mdl-cell">
+
+        <h3>IAP Headers</h3>
+
+        <table class="mdl-data-table mdl-js-data-table  mdl-shadow--2dp">
+          <tbody>
+            <tr>
+              <td class="mdl-data-table__cell--non-numeric">IAP_email</td>
+              <td>{{ iap_email }}</td>
+            </tr>
+            <tr>
+              <td class="mdl-data-table__cell--non-numeric">IAP_userId</td>
+              <td>{{ iap_userId }}</td>
+            </tr>
+            <tr>
+                <td class="mdl-data-table__cell--non-numeric">IAP_JWT</td>
+                <td>
+                    <div class="mdl-textfield mdl-js-textfield">
+                        <input class="mdl-textfield__input" type="text" id="iap_jwt" value="{{ iap_jwt }}">
+                        <label class="mdl-textfield__label" for="iap_jwt">IAP_JWT</label>
+                    </div>
+                </td>
+              </tr>            
+          </tbody>
+        </table>
+        <br/>
+
+        <table class="mdl-data-table mdl-js-data-table  mdl-shadow--2dp">
+            <thead>
+                <tr>
+                  <th class="mdl-data-table__cell--non-numeric">Operation</th>
+                  <th class="mdl-data-table__cell--non-numeric">Result</th>
+                </tr>
+              </thead>          
+          <tbody>
+            <tr>
+              <td class="mdl-data-table__cell--non-numeric"><button class="mdl-button mdl-js-button mdl-button--raised" id="getIdToken" onClick="getIdToken();">getIdToken()</button></td>
+              <td class="mdl-data-table__cell--non-numeric"><pre id="disp_idToken"></pre></td>              
+            </tr>
+
+            <tr>
+                <td class="mdl-data-table__cell--non-numeric">
+                <div class="mdl-textfield mdl-js-textfield">
+                  <input class="mdl-textfield__input" type="text" id="tasktext" value="some task">
+                  <label class="mdl-textfield__label" for="task">Task</label>
+                </div>
+                </td>
+
+                <td class="mdl-data-table__cell--non-numeric">
+                <div class="mdl-textfield mdl-js-textfield">
+                  <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id="taskid" >
+                  <label class="mdl-textfield__label" for="taskid"></label>
+                  <span class="mdl-textfield__error">Input is not a number!</span>
+                </div>
+                </td>
+              </tr>
+
+            <tr>
+                <td class="mdl-data-table__cell--non-numeric"><button class="mdl-button mdl-js-button mdl-button--raised" id="getEndpoints" disabled onClick="getEndpoints();">Access Endpoints</button></td>
+                <td class="mdl-data-table__cell--non-numeric">
+
+                    <table class="mdl-data-table mdl-js-data-table  mdl-shadow--2dp">
+                        <thead>
+                            <tr>
+                              <th class="mdl-data-table__cell--non-numeric">API</th>
+                              <th class="mdl-data-table__cell--non-numeric">Result</th>
+                            </tr>
+                          </thead>          
+                      <tbody>
+                          <tr>
+                              <td class="mdl-data-table__cell--non-numeric">List</td>
+                              <td class="mdl-data-table__cell--non-numeric"><pre id="list1"></pre></td>              
+                          </tr>
+                          <tr>
+                              <td class="mdl-data-table__cell--non-numeric">POST</td>
+                              <td class="mdl-data-table__cell--non-numeric"><pre id="post"></pre></td>              
+                          </tr>
+                          <tr>
+                              <td class="mdl-data-table__cell--non-numeric">Get</td>
+                              <td class="mdl-data-table__cell--non-numeric"><pre id="get"></pre></td>              
+                          </tr>
+                          <tr>
+                              <td class="mdl-data-table__cell--non-numeric">Delete</td>
+                              <td class="mdl-data-table__cell--non-numeric"><pre id="delete"></pre></td>              
+                          </tr>
+                          <tr>
+                              <td class="mdl-data-table__cell--non-numeric">List</td>
+                              <td class="mdl-data-table__cell--non-numeric"><pre id="list2"></pre></td>              
+                          </tr>                          
+                      </tbody>
+                    </table>                                 
+                
+                </td>                
+            </tr>        
+          </tbody>
+        </table>              
+
+
+    </div>
+    <div class="mdl-layout-spacer"></div>
+</div>
+
+</body>
+</html>

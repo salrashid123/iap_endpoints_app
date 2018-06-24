@@ -1,0 +1,20 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: esp-ingress
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: esp-ip
+    kubernetes.io/ingress.allowHTTP: "false"    
+  labels:
+    type: endpoints-app
+spec:
+  tls:
+  - secretName: esp-tls  
+  rules:
+  - host: api.endpoints.YOUR_PROJECT.cloud.goog
+    http:
+      paths:
+      - path: /*
+        backend:
+          serviceName: esp-srv
+          servicePort: 80
