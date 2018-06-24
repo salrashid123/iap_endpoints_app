@@ -27,6 +27,8 @@ This is a fairly long tutorial with several steps which must be performed in seq
 - Access to your Endpoints API using the reissued IAP token is not constrained by any IAM conditions applied to IAP.
   What that means is the while you maybe able to apply IAM conditions such as time of day, sourceIP and other polcies to a users IAP access, the JWT token reissued by IAP will not carry those conditions along inherently.  The endpoints applcation will need to validate/check for any embedded claims the JWT carries as policy or (preferably), perform a policy lookup to compare.
 
+- At the time of writing (6/25/18), App Engine Standard does not fully support WebSockets or gRPC inbound. If you require those technologies against your frontend application, consider using IAP with GKE and setting  ```type: Loadbalancer``` as the service.
+
 ---
 
 ## Prerequsites
@@ -85,27 +87,27 @@ The following steps sets up the IAP application running on ```Google App Engine 
 
 4) Add IAM role to create signed JWT to service_account
 
-  Navigate to ```IAM & Admin >> Service Accounts```
-  Find the service account for GAE (should be something like ```iap-endpoints@appspot.gserviceaccount.com```)
-  Add ```Service Account Token Creator``` role to itself:
+  - Navigate to ```IAM & Admin >> Service Accounts```
+  - Find the service account for GAE (should be something like ```iap-endpoints@appspot.gserviceaccount.com```)
+  - Add ```Service Account Token Creator``` role to itself:
 
   ![images/iam_delegation.png](images/iam_delegation.png)
 
 
 5) Enable IAP and add user/group access
 
-  Navigate to ```Security >> Identity Aware Proxy```
-  Configure Consent screen and Enable IAP
-  Add a user to IAP allowed list (in the case below, ```user1@esodemoapp2.com```)
+  - Navigate to ```Security >> Identity Aware Proxy```
+  - Configure Consent screen and Enable IAP
+  - Add a user to IAP allowed list (in the case below, ```user1@esodemoapp2.com```)
 
   ![images/iap_access.png](images/iap_access.png)
 
 
 6) Verify IAP access and token generation
   
-  Open an incognito winddow and navigate to   ```https://your_project.appspot.com```
-  Login as the user specified for IAP access
-  Click on ```getToken()``` button (do not click on any other one)
+  - Open an incognito winddow and navigate to   ```https://your_project.appspot.com```
+  - Login as the user specified for IAP access
+  - Click on ```getToken()``` button (do not click on any other one)
 
   You should a newly minted JWT with claims identifying the user:
 
@@ -138,8 +140,9 @@ The following steps sets up the IAP application running on ```Google App Engine 
    ```
 
 8) Edit ```openapi.yaml``` and specify IAP access credentials, static IP
-   Replace ```YOUR-PROJECT``` and ```STATIC-IP``` values.  
-   Keep  make sure```x-google-allow: all``` is set.  (see [google openapi-extensions](https://cloud.google.com/endpoints/docs/openapi/openapi-extensions))
+   - Replace ```YOUR-PROJECT``` and ```STATIC-IP``` values.  
+   - Keep  make sure```x-google-allow: all``` is set.  (see [google openapi-extensions](https://cloud.google.com/endpoints/docs/openapi/openapi-extensions))
+   
    For example,
 
 
@@ -286,8 +289,8 @@ as in
    ```
 
 
-  Provisioning a new LoadBalancer can take upto 10minutes,
-  Make sure your app is fully deployed:
+  - Provisioning a new LoadBalancer can take upto 10minutes,
+  - Make sure your app is fully deployed:
 
 ```
       $ kubectl get deployments,po,svc,ingress,secrets
@@ -510,7 +513,7 @@ What that page is demonstrating is a single page application rendered by IAP tha
 
 ## Conclustion
 
-THis sample application shows how to use two Google Cloud products together to achieve a common usecase:  policy based webapp access and its secure access to an API endpoint.  While there are some limitations with this teqnique as described above, this pattern should let you develop appication and control access to its consitutent APIs it calls.  In a future updates, we will demonstrate using ```gRPC``` api calls to your API backend instead of the current ```REST```.  We will also show how to embed additional claims and authorization extensions for Endpoints.
+This sample application shows how to use two Google Cloud products together to achieve a common usecase:  policy based webapp access and its secure access to an API endpoint.  While there are some limitations with this teqnique as described above, this pattern should let you develop appication and control access to its consitutent APIs it calls.  In a future updates, we will demonstrate using ```gRPC``` api calls to your API backend instead of the current ```REST```.  We will also show how to embed additional claims and authorization extensions for Endpoints and IAM.
 
 ## Appendix
 
