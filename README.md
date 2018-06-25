@@ -4,7 +4,7 @@
 
 This tutorial and repo contains a sample single-page application protected by [Google Cloud Identy-Aware Proxy](https://cloud.google.com/iap/) and a corresponding API service that the appliation accesses behind [Google Cloud Endpoints](https://cloud.google.com/endpoints/).
 
-When used together, your webapp is secured by policy declaration and will only get rendered to authorized users.  Once an authorized user accesses the site, it is given a security token to access an API backend directly from javascript. 
+When used together, your webapp is secured by policy declaration and will only get rendered to authorized users.  Once an authorized user accesses the site, it is given a security token to access an API backend directly from javascript.
 
 This repo demonstrates several additional features:
 
@@ -74,7 +74,7 @@ The following steps sets up the IAP application running on ```Google App Engine 
   ```
     audience = 'api.endpoints.YOUR-PROJECT.cloud.goog'
   ```
- 
+
 
 3) Deploy IAP application
 
@@ -104,7 +104,7 @@ The following steps sets up the IAP application running on ```Google App Engine 
 
 
 6) Verify IAP access and token generation
-  
+
   - Open an incognito winddow and navigate to   ```https://your_project.appspot.com```
   - Login as the user specified for IAP access
   - Click on ```getToken()``` button (do not click on any other one)
@@ -140,9 +140,9 @@ The following steps sets up the IAP application running on ```Google App Engine 
    ```
 
 8) Edit ```openapi.yaml``` and specify IAP access credentials, static IP
-   - Replace ```YOUR-PROJECT``` and ```STATIC-IP``` values.  
+   - Replace ```YOUR-PROJECT``` and ```STATIC-IP``` values.
    - Keep  make sure```x-google-allow: all``` is set.  (see [google openapi-extensions](https://cloud.google.com/endpoints/docs/openapi/openapi-extensions))
-   
+
    For example,
 
 
@@ -180,7 +180,7 @@ The following steps sets up the IAP application running on ```Google App Engine 
   ```
 
 10) Wait for DNS entry to get created for endpoints service
-   This may take ~5mins but you should see 
+   This may take ~5mins but you should see
 ```
    nslookup api.endpoints.YOUR-PROJECT.cloud.goog
 ```
@@ -193,19 +193,19 @@ The following steps sets up the IAP application running on ```Google App Engine 
       Non-authoritative answer:
       Name:	api.endpoints.iap-endpoints.cloud.goog
       Address: 35.201.95.158
-```  
+```
 
 
 11) Create and push API server container
 
    As above, replace ```YOUR-PROJECT```, as in
 
-```  
+```
    docker build -t gcr.io/YOUR-PROJECT/myapp .
    gcloud docker -- push gcr.io/YOUR-PROJECT/myapp
-```   
+```
 
-```  
+```
    docker build -t gcr.io/iap-endpoints/myapp .
    gcloud docker -- push gcr.io/iap-endpoints/myapp
 ```
@@ -233,7 +233,7 @@ The following steps sets up the IAP application running on ```Google App Engine 
     metadata:
       name: env-var
       labels:
-        type: endpoints-app  
+        type: endpoints-app
     data:
       IAP_URL: "https://YOUR-PROJECT.appspot.com"
       JWT_ISSUER: "YOUR-PROJECT@appspot.gserviceaccount.com"
@@ -248,7 +248,7 @@ as in
     metadata:
       name: env-var
       labels:
-        type: endpoints-app  
+        type: endpoints-app
     data:
       IAP_URL: "https://iap-endpoints.appspot.com"
       JWT_ISSUER: "iap-endpoints@appspot.gserviceaccount.com"
@@ -271,7 +271,7 @@ as in
         type: endpoints-app
     spec:
       tls:
-      - secretName: esp-tls  
+      - secretName: esp-tls
       rules:
       - host: api.endpoints.iap-project.cloud.goog
         http:
@@ -309,7 +309,7 @@ as in
 
       NAME                          TYPE                                  DATA      AGE
       secrets/default-token-cqhln   kubernetes.io/service-account-token   3         15m
-```  
+```
 
    Again, wait 10minutes, you should see your app here:
    - http://api.endpoints.iap-endpoints.cloud.goog/swagger.json
@@ -320,17 +320,17 @@ as in
   The following instructions to use ```LetsEncrypt``` with GKE is taken in part from [https://github.com/ahmetb/gke-letsencrypt](https://github.com/ahmetb/gke-letsencrypt).
 
 14) Download and install Helm
-   
+
 ```
       wget https://storage.googleapis.com/kubernetes-helm/helm-v2.9.1-linux-amd64.tar.gz
       tar xzvf helm-v2.9.1-linux-amd64.tar.gz && rm helm-v2.9.1-linux-amd64.tar.gz && export PATH=$PATH:`pwd`/linux-amd64
-``` 
+```
 
-```     
+```
      kubectl create serviceaccount -n kube-system tiller
 
      kubectl create clusterrolebinding tiller-binding --clusterrole=cluster-admin --serviceaccount kube-system:tiller
- 
+
      helm init --service-account tiller
 ```
 
@@ -434,7 +434,7 @@ as in
         Normal  CertObtained    5s    cert-manager  Obtained certificate from ACME server
         Normal  CertIssued      5s    cert-manager  Certificate issued successfully
 ```
-    
+
     You can also verify by checking if ```esp-tls``` secret has been provisioned
 
 ```
@@ -457,8 +457,8 @@ as in
      x-google-allow: configured
      ```
 
-  Deploy Application 
-  
+  Deploy Application
+
   ```
   gcloud endpoints services deploy openapi.yaml
   ```
@@ -494,7 +494,7 @@ as in
           https://api.endpoints.iap-endpoints.cloud.goog/swagger.json
       - Verify ```/todos``` endpoint requires security
           https://api.endpoints.iap-endpoints.cloud.goog/todos
-     
+
 
 
 ## End to End test
@@ -548,7 +548,7 @@ There are several ways to test the API server:
  - Start ESP server locally and also run ```http_server.py``` with security checks enabled.
    - If ESP is setup with default checks for an id_token issued by IAP, access the IAP main page and invoke ```getToken()``` to get a token to use.
      Place this token in the ```Authorizaiton: Bearer ``` header value of any API call.
- 
+
   - Update ```openapi.yaml``` file and specify a service account as an issuer.   You will need to download a service account json file and place it within the ```certs``` folder (```certs/svc_account.json```).  Once its downloaded, change the seurity definitions to use it:
       ```yaml
           securityDefinitions:
@@ -558,19 +558,19 @@ There are several ways to test the API server:
               type: "oauth2"
               x-google-issuer: "YOUR_SERVICE_ACCOUNT@gserviceaccount.com"
               x-google-jwks_uri: "https://www.googleapis.com/robot/v1/metadata/x509/YOUR_SERVICE_ACCOUNT@appspot.gserviceaccount.com"
-              x-google-audiences: "api.endpoints.YOUR_PROJECT.cloud.goog"  
+              x-google-audiences: "api.endpoints.YOUR_PROJECT.cloud.goog"
       ```
 
      - then upload  the config:
     ```
       $ gcloud endpoints services deploy openapi.yaml
     ```
-     
+
   - Start the backend service to listen on ```:50051```
 
     ```
         cd http
-        virtualenv env 
+        virtualenv env
         source env/bin/activate
         pip install -r requirements.txt
 
@@ -586,7 +586,7 @@ There are several ways to test the API server:
         documentation:
           summary: A simple TodoMVC API
         id: 2018-06-24r1
-     ``` 
+     ```
 
   - Start ESP in docker
 
@@ -645,7 +645,7 @@ $ curl -v -k -H "Origin: https://iap-endpoints.appspot.com"   -H "Access-Control
 > Access-Control-Request-Headers: Authorization, X-My-Custom-Header
 
 
-< HTTP/2 200 
+< HTTP/2 200
 < server: nginx
 < date: Sun, 24 Jun 2018 05:44:00 GMT
 < content-type: text/html; charset=utf-8

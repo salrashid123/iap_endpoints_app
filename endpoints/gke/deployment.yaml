@@ -29,7 +29,7 @@ spec:
           httpGet:
             path: /swagger.json
             scheme: HTTP
-            port: 8080                   
+            port: 8080
         ports:
           - containerPort: 8080
         env:
@@ -37,7 +37,7 @@ spec:
           valueFrom:
             configMapKeyRef:
               name: env-var
-              key: JWT_AUDIENCE        
+              key: JWT_AUDIENCE
       - name: myapp
         image: gcr.io/YOUR_PROJECT/myapp
         imagePullPolicy: Always
@@ -48,12 +48,12 @@ spec:
           valueFrom:
             configMapKeyRef:
               name: env-var
-              key: IAP_URL  
+              key: IAP_URL
         - name: JWT_ISSUER
           valueFrom:
             configMapKeyRef:
               name: env-var
-              key: JWT_ISSUER          
+              key: JWT_ISSUER
         - name: JWT_AUDIENCE
           valueFrom:
             configMapKeyRef:

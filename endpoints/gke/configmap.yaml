@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: env-var
   labels:
-    type: endpoints-app  
+    type: endpoints-app
 data:
   IAP_URL: "https://YOUR_PROJECT.appspot.com"
   JWT_ISSUER: "YOUR_PROJECT@appspot.gserviceaccount.com"

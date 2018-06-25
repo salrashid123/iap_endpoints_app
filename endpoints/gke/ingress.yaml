@@ -9,7 +9,7 @@ metadata:
     type: endpoints-app
 spec:
   tls:
-  - secretName: esp-tls  
+  - secretName: esp-tls
   rules:
   - host: api.endpoints.YOUR_PROJECT.cloud.goog
     http:
